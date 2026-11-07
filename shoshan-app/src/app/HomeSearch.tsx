@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { useHomeSearch } from "../hooks/useHomeSearch";
 import {
   Search,
   MapPinned,
@@ -30,79 +32,65 @@ export default function HomeSearch({
   selectedMarket,
   marketOptions,
 }: Props) {
-  const [activePanel, setActivePanel] = useState("");
+  const [mounted, setMounted] = useState(false);
+  console.log("HOME SEARCH LOADED");
 
-  const [operation, setOperation] = useState(
-    selectedMarket === "إعادة البيع" ? "resale" : "sale"
-  );
+useEffect(() => {
+    setMounted(true);
+}, []);
 
-  const [propertyType, setPropertyType] = useState("");
-  const [location, setLocation] = useState("");
+  const {
+  activePanel,
+  setActivePanel,
+  openPanel,
+  closePanel,
+  isOpen,
 
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [minArea, setMinArea] = useState("");
-  const [maxArea, setMaxArea] = useState("");
+  operation,
+  setOperation,
+  propertyType,
+  setPropertyType,
+  location,
+  setLocation,
 
-  const [bedrooms, setBedrooms] = useState("الكل");
-  const [bathrooms, setBathrooms] = useState("الكل");
+  minPrice,
+  setMinPrice,
+  maxPrice,
+  setMaxPrice,
+  minArea,
+  setMinArea,
+  maxArea,
+  setMaxArea,
 
-  const [paymentMethod, setPaymentMethod] = useState("الكل");
-  const [downPayment, setDownPayment] = useState("");
-  const [monthlyPayment, setMonthlyPayment] = useState("");
-  const [installmentYears, setInstallmentYears] = useState("الكل");
+  bedrooms,
+  setBedrooms,
+  bathrooms,
+  setBathrooms,
 
-  const [finishing, setFinishing] = useState("الكل");
-  const [delivery, setDelivery] = useState("الكل");
-  const [amenities, setAmenities] = useState<string[]>([]);
+  paymentMethod,
+  setPaymentMethod,
+  downPayment,
+  setDownPayment,
+  monthlyPayment,
+  setMonthlyPayment,
+  installmentYears,
+  setInstallmentYears,
 
-  const currentTypes = marketOptions[selectedMarket] || [];
+  finishing,
+  setFinishing,
+  delivery,
+  setDelivery,
+  amenities,
+  toggleAmenity,
 
-  const marketValue =
-    selectedMarket === "سكني"
-      ? "residential"
-      : selectedMarket === "تجاري"
-        ? "commercial"
-        : selectedMarket === "فندقي"
-          ? "hotel"
-          : selectedMarket === "إعادة البيع"
-            ? "resale"
-            : "investment";
-
-  const installmentEnabled =
-    paymentMethod === "تقسيط فقط" ||
-    paymentMethod === "نقدي أو تقسيط";
-
-  const toggleAmenity = (item: string) => {
-    setAmenities((current) =>
-      current.includes(item)
-        ? current.filter((value) => value !== item)
-        : [...current, item]
-    );
-  };
-
-  const resetFilters = () => {
-    setOperation(selectedMarket === "إعادة البيع" ? "resale" : "sale");
-    setPropertyType("");
-    setLocation("");
-    setMinPrice("");
-    setMaxPrice("");
-    setMinArea("");
-    setMaxArea("");
-    setBedrooms("الكل");
-    setBathrooms("الكل");
-    setPaymentMethod("الكل");
-    setDownPayment("");
-    setMonthlyPayment("");
-    setInstallmentYears("الكل");
-    setFinishing("الكل");
-    setDelivery("الكل");
-    setAmenities([]);
-  };
+  currentTypes,
+  marketValue,
+  installmentEnabled,
+  resetFilters,
+} = useHomeSearch({ selectedMarket, marketOptions });
 
   const panelButton =
-    "flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-sky-100 bg-[#F6FAFE] px-4 py-4 text-right transition hover:border-sky-300 hover:bg-sky-50";
-
+  "group flex min-h-[34px] min-w-0 items-center justify-between gap-2 rounded-2xl border border-[#DCEBF7] bg-gradient-to-br from-white via-[#F8FBFF] to-[#EFF7FD] px-3 py-0.5 text-right shadow-[0_3px_10px_rgba(37,142,232,0.045),inset_0_1px_0_rgba(255,255,255,0.95)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#A9D8F5] hover:shadow-[0_7px_18px_rgba(37,142,232,0.11)] active:translate-y-0";
   const choiceButton = (active: boolean) =>
     `rounded-xl border px-4 py-3 text-sm font-bold transition ${
       active
@@ -111,19 +99,18 @@ export default function HomeSearch({
     }`;
 
   const inputStyle =
-    "w-full min-w-0 rounded-xl border border-sky-100 bg-[#F6FAFE] px-4 py-3 text-sm text-[#142B49] outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:ring-4 focus:ring-sky-100";
+  "w-full min-w-0 rounded-lg border border-sky-100 bg-[#F6FAFE] px-3 py-2 text-sm text-[#142B49] outline-none transition placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:ring-2 focus:ring-sky-100";
 
   const panelTitle =
-    "mb-4 text-base font-extrabold text-[#142B49]";
+  "mb-2 text-sm font-extrabold text-[#142B49]";
 
-  const isOpen = (name: string) => activePanel === name;
-
+  
   return (
-    <section className="relative mx-auto max-w-[1500px] px-3 pb-10 pt-2 sm:px-8 sm:pb-12 lg:px-12">
+    <section className="relative z-20 mx-auto -mt-8 max-w-[1500px] px-3 pb-3 pt-1 sm:-mt-12 sm:px-8 sm:pb-12 sm:pt-2 lg:px-12">
       <form
         action="/properties"
         method="get"
-        className="relative rounded-[30px] border border-sky-100/90 bg-white p-4 shadow-[0_12px_38px_rgba(31,104,160,0.07)] sm:rounded-[38px] sm:p-7 lg:p-9"
+        className="relative rounded-2xl border border-sky-100/90 bg-white p-2 shadow-[0_8px_24px_rgba(31,104,160,0.06)] sm:rounded-2xl sm:p-5 lg:p-7"
       >
         <input type="hidden" name="market" value={marketValue} />
         <input type="hidden" name="operation" value={operation} />
@@ -153,47 +140,66 @@ export default function HomeSearch({
         {amenities.map((item) => (
           <input key={item} type="hidden" name="amenities" value={item} />
         ))}
+{/* HEADER */}
+<div className="mb-3 flex items-center justify-between gap-3 sm:mb-5">
 
-        {/* HEADER */}
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 className="text-xl font-extrabold text-[#142B49] sm:text-2xl">
-              ابحث عن عقارك
-            </h2>
-            <p className="mt-1 text-xs text-slate-400 sm:text-sm">
-              اكتشف العقار المناسب لك بسهولة
-            </p>
-          </div>
+  <div className="flex items-center gap-2.5">
+    <span className="h-7 w-1 rounded-full bg-gradient-to-b from-[#0878D9] to-[#48B8F5]" />
 
-          <a
-            href="/advanced-search"
-            className="rounded-full border border-sky-100 bg-[#F8FCFF] px-4 py-2 text-xs font-bold text-[#258EE8] transition hover:bg-sky-50"
-          >
-            البحث المتقدم ←
-          </a>
-        </div>
+    <h2 className="text-[13px] font-extrabold tracking-tight text-[#142B49] sm:text-[17px]">
+      ابحث عن عقارك
+    </h2>
+  </div>
+
+  <button
+  type="button"
+  onPointerDown={(event) => {
+  console.log("POINTER DOWN:", event.pointerType);
+}}
+onPointerUp={(event) => {
+  console.log("POINTER UP:", event.pointerType);
+  openPanel("all");
+}}
+  onKeyDown={(event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openPanel("all");
+    }
+  }}
+  aria-label="فتح الفلاتر"
+  title="جميع الفلاتر"
+  className="relative z-50 touch-manipulation flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-[#DCECF8] bg-gradient-to-br from-white to-[#F0F8FF] text-[#258EE8] shadow-[0_3px_10px_rgba(37,142,232,0.08)] transition duration-300 hover:-translate-y-0.5 hover:border-[#A9D8F5] hover:shadow-[0_6px_15px_rgba(37,142,232,0.14)] sm:h-11 sm:w-11"
+>
+  <SlidersHorizontal size={20} strokeWidth={1.9} />
+</button>
+
+</div>
 
         {/* MAIN FILTER BAR */}
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2 lg:grid-cols-4">
           <button
-            type="button"
-            onClick={() => setActivePanel("operation")}
-            className={panelButton}
-          >
-            <span>
-              <span className="block text-[10px] text-slate-400">
-                نوع العملية
-              </span>
-              <span className="mt-1 block text-sm font-extrabold text-[#142B49]">
-                {operation === "rent"
-                  ? "إيجار"
-                  : operation === "resale"
-                    ? "إعادة بيع / تنازل"
-                    : "شراء"}
-              </span>
-            </span>
-            <ChevronDown size={17} className="shrink-0 text-[#258EE8]" />
-          </button>
+  type="button"
+  onClick={() => setActivePanel("all")}
+  className={`${panelButton} group`}
+>
+  <span className="flex min-w-0 flex-col gap-1">
+    <span className="text-[11px] font-medium text-[#91A1B3]">
+      نوع العملية
+    </span>
+
+    <span className="truncate text-[15px] font-extrabold text-[#142B49]">
+      {operation === "rent"
+        ? "إيجار"
+        : operation === "resale"
+          ? "إعادة بيع / تنازل"
+          : "شراء"}
+    </span>
+  </span>
+
+  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#EAF5FD] text-[#258EE8] transition-all duration-300 group-hover:bg-[#DCEFFF]">
+    <ChevronDown size={17} strokeWidth={2.2} />
+  </span>
+</button>
 
           <button
             type="button"
@@ -246,18 +252,11 @@ export default function HomeSearch({
             <Wallet size={17} className="shrink-0 text-[#258EE8]" />
           </button>
 
-          <button
-            type="button"
-            onClick={() => setActivePanel("all")}
-            className="col-span-2 flex items-center justify-center gap-3 rounded-2xl bg-[#142B49] px-4 py-4 text-sm font-extrabold text-white transition hover:bg-[#1C3B62] sm:col-span-1"
-          >
-            <SlidersHorizontal size={18} />
-            جميع الفلاتر
-          </button>
+          
         </div>
 
         {/* SEARCH BUTTON */}
-<div className="mt-5 flex flex-col gap-4 border-t border-sky-50 pt-5 sm:flex-row sm:items-center sm:justify-between">
+<div className="mt-3 flex flex-col gap-3 border-t border-sky-50 pt-3 sm:mt-5 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:pt-5">
   <div className="flex flex-wrap items-center gap-x-6 gap-y-4 text-xs font-bold text-[#52677E]">
     <a
       href="/map"
@@ -267,13 +266,7 @@ export default function HomeSearch({
       البحث بالخريطة
     </a>
 
-    <a
-      href="/advanced-search"
-      className="flex items-center gap-2 transition hover:text-[#258EE8]"
-    >
-      <SlidersHorizontal size={17} strokeWidth={1.8} className="text-[#258EE8]" />
-      خيارات متقدمة
-    </a>
+   
 
     <a
       href="/property-request"
@@ -286,7 +279,7 @@ export default function HomeSearch({
 
   <button
     type="submit"
-    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-l from-[#0878D9] to-[#48B8F5] px-8 py-4 text-sm font-extrabold text-white shadow-[0_8px_22px_rgba(37,142,232,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(37,142,232,0.30)] sm:w-auto"
+    className="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-[#0878D9] to-[#48B8F5] px-6 py-2.5 text-sm font-extrabold text-white shadow-[0_8px_22px_rgba(37,142,232,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(37,142,232,0.30)] sm:w-auto sm:rounded-2xl sm:px-8 sm:py-4"
   >
     <Search size={19} />
     بحث عن عقار
@@ -297,16 +290,16 @@ export default function HomeSearch({
       </form>
 
       {/* FILTER OVERLAY */}
-      {activePanel !== "" && (
-        <div
-          className="fixed inset-0 z-[100] flex items-end justify-center bg-[#0B1E3B]/45 backdrop-blur-sm sm:items-center sm:p-5"
-          onClick={() => setActivePanel("")}
-        >
-          <div
-            dir="rtl"
-            className="max-h-[88vh] w-full max-w-xl overflow-hidden rounded-t-[28px] bg-white shadow-2xl sm:rounded-[28px]"
-            onClick={(event) => event.stopPropagation()}
-          >
+{mounted && activePanel !== "" && createPortal(
+    <div
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-[#0B1E3B]/45 backdrop-blur-sm sm:items-center sm:p-5"
+      onClick={() => setActivePanel("")}
+    >
+      <div
+        dir="rtl"
+        className="max-h-[88vh] w-full max-w-xl overflow-hidden rounded-t-[28px] bg-white shadow-2xl sm:rounded-[28px]"
+        onClick={(event) => event.stopPropagation()}
+      >
             {/* PANEL HEADER */}
             <div className="flex items-center justify-between border-b border-sky-50 px-5 py-4">
               <h3 className="text-lg font-extrabold text-[#142B49]">
@@ -659,8 +652,9 @@ export default function HomeSearch({
                 تطبيق الاختيارات
               </button>
             </div>
-          </div>
-        </div>
+                   </div>
+        </div>,
+        document.body
       )}
     </section>
   );

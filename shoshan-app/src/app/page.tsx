@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import HomeSearch from "./HomeSearch";
+import MarketSelector from "./MarketSelector";
 import {
   Bell,
   Building2,
@@ -30,6 +31,9 @@ import {
   UserRound,
   Waves,
   Repeat2,
+  Palmtree,
+  KeyRound,
+  ChartNoAxesCombined,
 } from "lucide-react";
 
 
@@ -172,7 +176,8 @@ function SectionHeading({
 }
 
 export default function Home() {
-  const [activeMarket, setActiveMarket] = useState<string | null>(null);
+    const [activeMarket, setActiveMarket] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 const [selectedMarket, setSelectedMarket] = useState("سكني");
 const marketOptions: Record<string, { value: string; label: string }[]> = {
   سكني: [
@@ -189,13 +194,11 @@ const marketOptions: Record<string, { value: string; label: string }[]> = {
     { value: "factory", label: "مصانع" },
     { value: "commercial-land", label: "أراضٍ تجارية" },
   ],
-  فندقي: [
-    { value: "hotel", label: "فنادق" },
+   مصايف: [
     { value: "resort", label: "منتجعات" },
-    { value: "hotel-apartment", label: "شقق فندقية" },
-    { value: "furnished-apartment", label: "شقق مفروشة" },
     { value: "chalet", label: "شاليهات" },
     { value: "tourist-villa", label: "فيلات سياحية" },
+    { value: "furnished-apartment", label: "شقق مفروشة" },
   ],
   "إعادة البيع": [
     { value: "resale", label: "عقارات إعادة البيع" },
@@ -209,14 +212,64 @@ const marketOptions: Record<string, { value: string; label: string }[]> = {
     { value: "investment-land", label: "أراضٍ استثمارية" },
   ],
 };
-
-  const markets = [
-    { name: "سكني", icon: House, items: [["شقق", Building2, "/properties?type=apartment"], ["فيلات", House, "/properties?type=villa"], ["عمارات", Building, "/properties?type=whole-building"], ["كمبوندات", Trees, "/properties?type=compound"], ["مطورون", Landmark, "/developers"], ["شركات", BriefcaseBusiness, "/companies"]] },
-    { name: "تجاري", icon: Store, items: [["محلات", Store, "/properties?type=shop"], ["مكاتب", BriefcaseBusiness, "/properties?type=office"], ["عيادات", Stethoscope, "/properties?type=clinic"], ["مخازن", Warehouse, "/properties?type=warehouse"], ["مصانع", Factory, "/properties?type=factory"], ["أراضٍ تجارية", LandPlot, "/properties?type=commercial-land"]] },
-    { name: "فندقي", icon: Hotel, items: [["فنادق", Hotel, "/properties?type=hotel"], ["منتجعات", Trees, "/properties?type=resort"], ["شقق فندقية", Building, "/properties?type=hotel-apartment"], ["شقق مفروشة", Sofa, "/properties?type=furnished-apartment"], ["شاليهات", Waves, "/properties?type=chalet"], ["فيلات سياحية", House, "/properties?type=tourist-villa"]] },
-    { name: "إعادة البيع", icon: Repeat2, items: [["عقارات إعادة البيع", House, "/resale"], ["تنازل عن تعاقد", Repeat2, "/resale"], ["وحدات استلام فوري", Building2, "/resale"], ["فرص إعادة البيع", Wallet, "/resale"]] },
-    { name: "استثماري", icon: Landmark, items: [["مبانٍ كاملة", Building, "/properties?type=whole-building"], ["مشروعات", Landmark, "/projects"], ["فرص تطوير", Compass, "/properties?type=development-opportunity"], ["أصول مدرة للدخل", Wallet, "/properties?type=income-property"], ["أراضٍ", LandPlot, "/properties?type=investment-land"], ["مطورون", Building2, "/developers"]] },
-  ] as const;
+const markets = [
+  {
+    name: "سكني",
+    icon: House,
+    items: [
+      ["شقق", Building2, "/properties?type=apartment"],
+      ["فيلات", House, "/properties?type=villa"],
+      ["عمارات", Building, "/properties?type=whole-building"],
+      ["كمبوندات", Trees, "/properties?type=compound"],
+      ["مطورون", Landmark, "/developers"],
+      ["شركات", BriefcaseBusiness, "/companies"],
+    ],
+  },
+  {
+    name: "تجاري",
+    icon: Building2,
+    items: [
+      ["محلات", Store, "/properties?type=shop"],
+      ["مكاتب", BriefcaseBusiness, "/properties?type=office"],
+      ["عيادات", Stethoscope, "/properties?type=clinic"],
+      ["مخازن", Warehouse, "/properties?type=warehouse"],
+      ["مصانع", Factory, "/properties?type=factory"],
+      ["أراضٍ تجارية", LandPlot, "/properties?type=commercial-land"],
+    ],
+  },
+  {
+    name: "مصايف",
+    icon: Palmtree,
+    items: [
+      ["منتجعات", Trees, "/properties?type=resort"],
+      ["شاليهات", Waves, "/properties?type=chalet"],
+      ["فيلات سياحية", House, "/properties?type=tourist-villa"],
+      ["شقق مفروشة", Sofa, "/properties?type=furnished-apartment"],
+    ],
+  },
+  {
+    name: "إعادة البيع",
+    icon: KeyRound,
+    items: [
+      ["عقارات إعادة البيع", House, "/resale"],
+      ["تنازل عن تعاقد", Repeat2, "/resale"],
+      ["وحدات استلام فوري", Building2, "/resale"],
+      ["فرص إعادة البيع", Wallet, "/resale"],
+    ],
+  },
+  {
+    name: "استثماري",
+    icon: ChartNoAxesCombined,
+    items: [
+      ["مبانٍ كاملة", Building, "/properties?type=whole-building"],
+      ["مشروعات", Landmark, "/projects"],
+      ["فرص تطوير", Compass, "/properties?type=development-opportunity"],
+      ["أصول مدرة للدخل", Wallet, "/properties?type=income-property"],
+      ["أراضٍ", LandPlot, "/properties?type=investment-land"],
+      ["مطورون", Building2, "/developers"],
+    ],
+  },
+] as const;
 
   return (
     <main
@@ -225,22 +278,14 @@ const marketOptions: Record<string, { value: string; label: string }[]> = {
     >
             {/* HEADER */}
       <header className="sticky top-0 z-50 border-b border-sky-100/80 bg-white/85 text-[#142B49] shadow-[0_4px_24px_rgba(31,104,160,0.06)] backdrop-blur-2xl">
-        <div className="mx-auto flex h-[64px] max-w-[1500px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-10">
-          <a href="/" className="flex shrink-0 items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#48B8F5] to-[#258EE8] text-2xl font-bold text-white shadow-lg shadow-sky-200">
-              ش
-            </div>
-            <div>
-              <div className="text-base font-extrabold tracking-[2px] sm:text-lg">
-                SHOSHAN
-              </div>
-              <div className="text-[9px] tracking-[4px] text-[#258EE8]">
-                PROPERTIES
-              </div>
-              <div className="text-[9px] text-slate-500">شوشان العقارية</div>
-            </div>
-          </a>
-
+        <div className="mx-auto flex h-[56px] max-w-[1500px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-10">
+          <a href="/" className="flex shrink-0 items-center">
+  <img
+    src="/shoshan-logoes.png"
+    alt="SHOSHAN PROPERTIES"
+    className="h-12 w-auto max-w-[180px] object-contain"
+  />
+</a>
           <nav className="hidden items-center gap-5 xl:flex">
             {[
               ["الرئيسية", "/"],
@@ -306,14 +351,15 @@ const marketOptions: Record<string, { value: string; label: string }[]> = {
               <UserRound size={19} />
             </a>
             <button
-              type="button"
-              aria-label="القائمة"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-sky-100 bg-white text-[#258EE8]"
-            >
-              <Menu size={20} />
-            </button>
-          </div>
-        </div>
+  type="button"
+  aria-label={isMobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة"}
+  aria-expanded={isMobileMenuOpen}
+  onClick={() => setIsMobileMenuOpen((open) => !open)}
+  className="flex h-10 w-10 items-center justify-center rounded-full border border-sky-100 bg-white text-[#258EE8]"
+>
+  <Menu size={20} />
+</button>
+</div>
 
         <div className="hidden border-t border-sky-50 lg:block">
           <nav className="mx-auto flex max-w-[1500px] items-center justify-center gap-8 px-6 py-3 text-xs font-medium text-slate-500">
@@ -326,59 +372,151 @@ const marketOptions: Record<string, { value: string; label: string }[]> = {
             <a href="/companies" className="hover:text-sky-500">الشركات والخدمات</a>
           </nav>
         </div>
+        </div>
             </header>
 
       <div className="home-feature-frame">
                               {/* HERO */}
-      <section className="relative isolate overflow-hidden bg-[#F4FAFF]">
-        {/* Architectural Background */}
-        <div
-          className="absolute inset-0 -z-20 bg-cover bg-left bg-no-repeat"
-          style={{
-            backgroundImage:
-              "url(https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600)",
-          }}
-        />
+      {/* MOBILE & TABLET HERO — الحفاظ على التصميم الحالي */}
 
-        {/* Soft Text Protection - Clear Image */}
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.03)_42%,rgba(255,255,255,0.35)_72%,rgba(255,255,255,0.72)_100%)]" />
+<div className="lg:hidden">
+  <section className="relative z-30 isolate overflow-hidden bg-[#F4F1EA]">
+    {/* Hero Background */}
+    <div
+      className="absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat"
+      style={{
+  backgroundImage: "url('/images/hero/main.jpg')",
+}}
+    />
 
-        <div className="relative mx-auto flex min-h-[248px] max-w-[1500px] items-start justify-end px-4 pb-10 pt-5 sm:min-h-[297px] sm:items-center sm:px-8 sm:py-7 lg:min-h-[329px] lg:px-12">
-          <div className="relative z-10 w-full max-w-[650px] text-right">
-            <h1 className="text-[32px] font-extrabold leading-[1.4] tracking-tight text-[#142B49] sm:text-5xl lg:text-[64px]">
-              اكتشف عالمًا
-              <br />
-              <span className="bg-gradient-to-l from-[#0878D9] to-[#35A9F4] bg-clip-text text-transparent">
-                من الفرص العقارية
-              </span>
-            </h1>
+    {/* Premium Gradient Overlay */}
+<div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(16,31,53,0.16)_0%,rgba(16,31,53,0.06)_35%,rgba(244,241,234,0.82)_72%,rgba(244,241,234,0.97)_100%)]" />
 
-            <p className="mt-3 max-w-[570px] text-sm font-medium leading-[1.8] text-[#34465B] sm:mt-4 sm:text-lg lg:text-xl">
-              استكشف سوقًا عقاريًا متكاملًا يجمع العقارات السكنية والتجارية
-              والسياحية والاستثمارية، واكتشف فرصتك القادمة بثقة ووضوح.
-            </p>
+    {/* Hero Content */}
+<div className="relative mx-auto flex min-h-[150px] max-w-[1500px] items-center justify-end px-4 py-2 sm:min-h-[300px] sm:px-8 sm:py-7">
+  <div
+    dir="rtl"
+    className="relative z-10 w-full max-w-[650px] text-right"
+  >
+    <h1 className="text-[25px] font-extrabold leading-[1.35] tracking-tight text-[#142B49] sm:text-5xl">
+      اكتشف عالمًا
+      <br />
+      <span className="bg-gradient-to-l from-[#0878D9] to-[#35A9F4] bg-clip-text text-transparent">
+        من الفرص العقارية
+      </span>
+    </h1>
 
-            <div className="mt-5 flex flex-wrap justify-start gap-3 sm:mt-7">
-              <a
-                href="/properties"
-                className="inline-flex min-h-[50px] items-center justify-center rounded-2xl bg-gradient-to-l from-[#006BCB] to-[#078CEB] px-5 text-sm font-extrabold text-white shadow-[0_8px_20px_rgba(0,116,210,0.22)] transition hover:-translate-y-1 sm:min-h-[60px] sm:px-8 sm:text-lg"
-              >
-                استكشف العقارات ←
-              </a>
+    <p className="mt-1 max-w-[570px] text-[12px] font-medium leading-[1.7] text-[#34465B] sm:mt-4 sm:text-lg">
+      استكشف سوقًا عقاريًا متكاملًا يجمع العقارات السكنية والتجارية
+      والسياحية والاستثمارية، واكتشف فرصتك القادمة بثقة ووضوح.
+    </p>
 
-              <a
-                href="/projects"
-                className="inline-flex min-h-[50px] items-center justify-center rounded-2xl border border-[#D4E2F0] bg-white/90 px-5 text-sm font-extrabold text-[#174B82] shadow-[0_5px_15px_rgba(31,104,160,0.10)] transition hover:-translate-y-1 hover:border-sky-300 sm:min-h-[60px] sm:px-8 sm:text-lg"
-              >
-                اكتشف المشروعات
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+    {/* Hero Actions */}
+    <div className="mt-3 flex flex-wrap items-center justify-start gap-2 sm:mt-7 sm:gap-3">
+      <a
+        href="/properties"
+        className="inline-flex min-h-[40px] items-center justify-center rounded-xl bg-gradient-to-l from-[#006BCB] to-[#078CEB] px-4 text-xs font-extrabold text-white shadow-[0_8px_20px_rgba(0,116,210,0.22)] transition hover:-translate-y-1 sm:min-h-[58px] sm:px-8 sm:text-lg"
+      >
+        استكشف العقارات ←
+      </a>
+
+      <a
+        href="/projects"
+        className="inline-flex min-h-[40px] items-center justify-center rounded-xl border border-[#D4E2F0] bg-[#FFFDF9]/95 px-4 text-xs font-extrabold text-[#174B82] shadow-[0_5px_15px_rgba(31,104,160,0.10)] transition hover:-translate-y-1 hover:border-sky-300 sm:min-h-[58px] sm:px-8 sm:text-lg"
+      >
+        اكتشف المشروعات
+      </a>
+    </div>
+  </div>
+</div>
+</section>
+</div>
+
+{/* DESKTOP HERO — SHOSHAN PREMIUM EXPERIENCE */}
+
+<section className="relative hidden min-h-[510px] overflow-hidden bg-[#101F35] lg:block xl:min-h-[550px]">
+  {/* Architectural background */}
+  <div className="pointer-events-none absolute inset-0">
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_15%_50%,rgba(36,87,167,0.28),transparent_55%)]" />
+    <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.16)_1px,transparent_1px)] [background-size:72px_72px]" />
+    <div className="absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full border border-[#B69A6A]/15" />
+    <div className="absolute -left-20 -top-20 h-[360px] w-[360px] rounded-full border border-[#B69A6A]/10" />
+  </div>
+
+  <div className="relative mx-auto grid min-h-[510px] max-w-[1500px] grid-cols-2 items-center gap-10 px-12 py-12 xl:min-h-[550px] xl:gap-16 xl:px-16">
+    {/* Villa image — right side */}
+    <div className="relative h-[390px] overflow-hidden rounded-[34px] border border-[#B69A6A]/40 bg-[#1B304B] shadow-[0_30px_80px_rgba(0,0,0,0.38)] xl:h-[430px]">
+      <img
+        src="/images/hero/luxury-villa.jpg"
+        alt="فيلا معمارية فاخرة بإطلالة على المسبح"
+        className="h-full w-full object-cover object-center"
+      />
+
+  <div className="absolute inset-0 bg-gradient-to-t from-[#101F35]/55 via-transparent to-transparent" />
+
+  <div className="absolute bottom-6 right-7 rounded-xl border border-white/20 bg-[#101F35]/65 px-5 py-3 text-right backdrop-blur-md">
+    <span className="block text-xs font-medium text-[#D9C6A2]">
+      SHOSHAN PROPERTIES
+    </span>
+    <span className="mt-1 block text-sm font-bold text-white">
+      اكتشف قيمة المكان
+    </span>
+  </div>
+
+  <div className="absolute right-0 top-10 h-20 w-1 bg-[#B69A6A]" />
+</div>
+
+{/* Text — left side */}
+<div className="relative z-10 flex flex-col items-start text-right">
+  <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-[#B69A6A]/35 bg-white/[0.04] px-5 py-2.5">
+    <span className="h-2 w-2 rounded-full bg-[#B69A6A]" />
+    <span className="text-sm font-semibold tracking-wide text-[#D9C6A2]">
+      عالم متكامل من الفرص
+    </span>
+  </div>
+
+  <h1 className="text-[52px] font-extrabold leading-[1.35] tracking-tight text-[#F5F0E7] xl:text-[62px]">
+    اكتشف عالمًا
+    <br />
+    <span className="bg-gradient-to-l from-[#D9C6A2] via-[#F0D9A9] to-[#B69A6A] bg-clip-text text-transparent">
+      من الفرص العقارية
+    </span>
+  </h1>
+
+    <p className="mt-6 max-w-[570px] text-lg font-medium leading-[2] text-[#C5D0DF] xl:text-xl">
+    وجهتك لاكتشاف العقارات والمشروعات والفرص الاستثمارية،
+    في تجربة متكاملة تجمع الأسواق وتمنحك رؤية أوضح لاتخاذ قرارك.
+  </p>
+
+  <div className="mt-9 flex flex-wrap gap-4">
+    <a
+      href="/properties"
+      className="inline-flex min-h-[58px] items-center justify-center rounded-2xl bg-gradient-to-l from-[#B69A6A] to-[#D7BD8D] px-8 text-base font-extrabold text-[#14243A] shadow-[0_12px_30px_rgba(182,154,106,0.2)] transition duration-300 hover:-translate-y-1"
+    >
+      استكشف العقارات
+      <span className="mr-3 text-xl">←</span>
+    </a>
+
+    <a
+      href="/projects"
+      className="inline-flex min-h-[58px] items-center justify-center rounded-2xl border border-[#A9B8C8]/35 bg-white/[0.04] px-8 text-base font-bold text-[#F5F0E7] transition duration-300 hover:border-[#B69A6A] hover:bg-white/[0.08]"
+    >
+      اكتشف المشروعات
+    </a>
+  </div>
+
+  <div className="mt-9 h-px w-24 bg-gradient-to-l from-[#B69A6A] to-transparent" />
+
+  <p className="mt-4 text-xs font-medium tracking-[0.18em] text-[#A9B8C8]">
+    PROPERTY · PROJECTS · INVESTMENT
+  </p>
+</div>
+</div>
+</section>
 
                         {/* ARCHITECTURAL MARKET & SEARCH PANEL */}
-      <div className="relative z-20 -mt-28 overflow-hidden sm:-mt-32">
+      <div className="relative z-20 -mt-12 overflow-visible sm:-mt-20">
+
 
         {/* SHARED FLOATING PANEL */}
         <svg
@@ -413,176 +551,12 @@ const marketOptions: Record<string, { value: string; label: string }[]> = {
         </svg>
 
         {/* PROPERTY MARKET SELECTOR */}
-        <section className="relative px-2 pb-3 pt-16 sm:px-8 sm:pt-20 lg:px-12">
-          <div className="relative mx-auto max-w-[1100px]">
+<MarketSelector />
 
-                        {/* SEMI-CIRCLE MARKET ICONS */}
-            <div className="relative z-10 -translate-y-5 flex min-h-[145px] items-end justify-center gap-2 pt-10 sm:min-h-[190px] sm:-translate-y-7 sm:gap-7">
-              {["إعادة البيع", "تجاري", "سكني", "فندقي", "استثماري"].map((marketName) => {
-                const market = markets.find((item) => item.name === marketName);
-                if (!market) return null;
-
-                const MarketIcon = market.icon;
-                const isActive = activeMarket === market.name;
-
-                const marketColors = {
-                  "إعادة البيع": {
-                    border: "border-rose-200",
-                    activeBorder: "border-rose-300",
-                    icon: "from-[#D97777] to-[#C45D68]",
-                    soft: "from-[#FFF1F2] to-[#FFE4E6]",
-                    text: "text-[#C45D68]",
-                    shadow: "rgba(217,119,119,0.22)",
-                  },
-                  "تجاري": {
-                    border: "border-sky-200",
-                    activeBorder: "border-sky-300",
-                    icon: "from-[#60A5FA] to-[#258EE8]",
-                    soft: "from-[#EFF8FF] to-[#E0F2FE]",
-                    text: "text-[#258EE8]",
-                    shadow: "rgba(37,142,232,0.22)",
-                  },
-                  "سكني": {
-                    border: "border-emerald-200",
-                    activeBorder: "border-emerald-300",
-                    icon: "from-[#65A98A] to-[#398565]",
-                    soft: "from-[#EFFAF4] to-[#DDF4E7]",
-                    text: "text-[#398565]",
-                    shadow: "rgba(101,169,138,0.22)",
-                  },
-                  "فندقي": {
-                    border: "border-blue-200",
-                    activeBorder: "border-blue-300",
-                    icon: "from-[#3678C8] to-[#174A91]",
-                    soft: "from-[#EFF5FF] to-[#DFEAFF]",
-                    text: "text-[#2863A8]",
-                    shadow: "rgba(54,120,200,0.22)",
-                  },
-                  "استثماري": {
-                    border: "border-green-200",
-                    activeBorder: "border-green-300",
-                    icon: "from-[#55A98B] to-[#25836A]",
-                    soft: "from-[#EFFAF6] to-[#D9F1E8]",
-                    text: "text-[#25836A]",
-                    shadow: "rgba(85,169,139,0.22)",
-                  },
-                }[market.name];
-
-                const arcPosition =
-                  market.name === "سكني"
-                    ? "-translate-y-3 sm:-translate-y-5"
-                    : market.name === "تجاري" || market.name === "فندقي"
-                      ? "-translate-y-1 sm:-translate-y-2"
-                      : "translate-y-1";
-
-                return (
-                  <button
-                    key={market.name}
-                    type="button"
-                    aria-expanded={isActive}
-                    onClick={() => {
-                      setSelectedMarket(market.name);
-                      setActiveMarket(isActive ? null : market.name);
-                    }}
-                    className={`group relative flex w-[68px] shrink-0 flex-col items-center transition-all duration-300 sm:w-[112px] ${arcPosition}`}
-                  >
-                    <span
-                      className={`flex h-[96px] w-[68px] flex-col items-center justify-center gap-2 rounded-[23px] border p-2 transition-all duration-300 sm:h-[112px] sm:w-[94px] sm:rounded-[27px] ${
-                        isActive
-                          ? `${marketColors.activeBorder} bg-white -translate-y-1`
-                          : `border-white/90 bg-white/90 shadow-[0_8px_25px_rgba(17,74,125,0.09)] backdrop-blur-md group-hover:-translate-y-1 ${marketColors.border}`
-                      }`}
-                      style={{
-                        boxShadow: isActive
-                          ? `0 12px 30px ${marketColors.shadow}`
-                          : undefined,
-                      }}
-                    >
-                      <span
-                        className={`flex h-[48px] w-[48px] items-center justify-center rounded-full transition-all duration-300 sm:h-[56px] sm:w-[56px] ${
-                          isActive
-                            ? `bg-gradient-to-br ${marketColors.icon} text-white`
-                            : `bg-gradient-to-br ${marketColors.soft} ${marketColors.text} shadow-[0_4px_12px_rgba(37,74,125,0.08)]`
-                        }`}
-                      >
-                        <MarketIcon size={27} strokeWidth={1.8} className="sm:hidden" />
-                        <MarketIcon size={31} strokeWidth={1.7} className="hidden sm:block" />
-                      </span>
-
-                      <span
-                        className={`whitespace-nowrap text-[10px] font-extrabold transition-colors sm:text-xs ${
-                          isActive ? marketColors.text : "text-[#172B4D]"
-                        }`}
-                      >
-                        {market.name}
-                      </span>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* SELECTED MARKET CATEGORIES */}
-            {activeMarket && (
-              <div className="relative mt-3 grid grid-cols-3 gap-2 rounded-2xl border border-sky-100 bg-white/95 p-3 shadow-[0_12px_35px_rgba(31,104,160,0.10)] sm:grid-cols-6 sm:gap-3 sm:p-4">
-                {markets.find((market) => market.name === activeMarket)?.items.map(([label, Icon, href]) => (
-                  <a
-                    key={label}
-                    href={href}
-                    className="flex min-h-[62px] flex-col items-center justify-center gap-2 rounded-xl border border-transparent bg-[#F8FCFF] px-1 py-3 text-center transition hover:border-sky-200 hover:bg-white hover:shadow-sm"
-                  >
-                    <Icon size={21} strokeWidth={1.6} className="text-[#258EE8]" />
-                    <span className="text-[10px] font-semibold text-slate-600 sm:text-xs">
-                      {label}
-                    </span>
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-
-        <HomeSearch
+<HomeSearch
   selectedMarket={selectedMarket}
   marketOptions={marketOptions}
 />
-      </div>
-
-
-      
-
-      {/* TOP REAL-ESTATE SPONSORED ADVERTISEMENT */}
-      <section className="bg-white py-2 sm:py-3">
-        <div className="mx-auto max-w-[1500px] px-4 sm:px-8 lg:px-12">
-          <a
-            href="/advertise"
-            className="group relative block min-h-[145px] overflow-hidden rounded-2xl border border-sky-100 bg-[#EAF7FF] shadow-[0_8px_28px_rgba(31,104,160,0.08)] sm:min-h-[155px] lg:min-h-[170px]"
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-[7000ms] ease-linear group-hover:scale-105"
-              style={{
-                backgroundImage:
-                  "url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=2000)",
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-[#0B1E3B]/85 via-[#102A56]/55 to-transparent" />
-            <span className="absolute left-3 top-3 z-10 text-[8px] font-medium tracking-wide text-white/85 sm:left-4 sm:top-4 sm:text-[9px]">
-              إعلان ممول
-            </span>
-            <div className="relative flex min-h-[145px] items-center px-6 py-5 sm:min-h-[155px] sm:px-10 lg:min-h-[170px]">
-              <div className="max-w-xl text-white">
-                <h2 className="text-lg font-extrabold sm:text-2xl">
-                  اكتشف فرصًا عقارية مميزة
-                </h2>
-                <p className="mt-1 text-xs text-white/85 sm:text-sm">
-                  مساحات إعلانية مخصصة للعقارات والمشروعات العقارية
-                </p>
-              </div>
-            </div>
-          </a>
-        </div>
-      </section>
-
       {/* FEATURED PROPERTIES */}
       <section className="bg-white py-5 sm:py-6">
         <div className="mx-auto max-w-[1500px] px-4 sm:px-8 lg:px-12">
@@ -977,6 +951,7 @@ const marketOptions: Record<string, { value: string; label: string }[]> = {
       >
         <Compass size={25} strokeWidth={1.8} />
       </a>
+      </div>
     </main>
   );
 }

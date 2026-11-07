@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+# Local backups and test files
+*.backup
+*.damaged.tsx
+/backups/
+active-project-files.txt
+/public/test-js.html

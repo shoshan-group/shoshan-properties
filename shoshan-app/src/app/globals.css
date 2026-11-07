@@ -1,57 +1,72 @@
 @import "tailwindcss";
-
 /* =========================================
-   SHOSHAN PROPERTIES — DESIGN SYSTEM
-   Pure White / White Glass / Sky Blue
+   SHOSHAN PROPERTIES
+   MODERN LUXURY DESIGN SYSTEM
 ========================================= */
 
 :root {
   color-scheme: light;
 
-  --background: #ffffff;
-  --foreground: #142b49;
+  /* BRAND */
+  --navy: #14243a;
+  --navy-deep: #0b192b;
+  --royal-blue: #2457a7;
+  --royal-light: #eaf0f9;
 
-  /* Brand */
-  --navy: #142b49;
-  --navy-deep: #0b1d35;
+  /* ACCENT */
+  --silver-blue: #a9b8c8;
+  --champagne: #b69a6a;
+  --turquoise: #00b8c7;
 
-  --royal-blue: #258ee8;
-  --sky-blue: #39aaf5;
-  --sky-light: #eaf7ff;
-  --royal-light: #edf7ff;
+  /* STATUS */
+  --success: #16a36a;
+  --warning: #f28c28;
+  --danger: #e5484d;
+  --ai-purple: #8b5cf6;
 
-  /* Surfaces */
+  /* BACKGROUNDS */
+  --background: #f3f6fa;
+  --background-soft: #edf2f7;
+  --foreground: #14243a;
+
+  /* SURFACES */
   --surface: #ffffff;
-  --surface-secondary: #f7fbff;
-  --surface-glass: rgba(255, 255, 255, 0.76);
-  --surface-glass-strong: rgba(255, 255, 255, 0.91);
+  --surface-secondary: #f7f9fc;
+  --surface-glass: rgba(255, 255, 255, 0.68);
+  --surface-glass-strong: rgba(255, 255, 255, 0.88);
+  --surface-dark: rgba(20, 36, 58, 0.96);
 
-  /* Borders & Shadows */
-  --border: #e5eff8;
-  --border-strong: #d5e8f7;
+  /* BORDERS */
+  --border: rgba(169, 184, 200, 0.28);
+  --border-strong: rgba(169, 184, 200, 0.48);
 
-  --shadow-soft: 0 8px 30px rgba(31, 104, 160, 0.07);
-  --shadow-card: 0 12px 36px rgba(31, 104, 160, 0.09);
-  --shadow-floating: 0 18px 50px rgba(31, 104, 160, 0.14);
+  /* SHADOWS */
+  --shadow-soft: 0 8px 28px rgba(20, 36, 58, 0.055);
+  --shadow-card: 0 14px 38px rgba(20, 36, 58, 0.09);
+  --shadow-floating: 0 22px 55px rgba(20, 36, 58, 0.14);
+  --shadow-brand: 0 12px 30px rgba(36, 87, 167, 0.18);
 
-  /* Text */
-  --muted: #7d91a7;
-  --muted-light: #a5b5c5;
+  /* TEXT */
+  --muted: #718096;
+  --muted-light: #a0adbb;
 
-  /* Shape */
+  /* SHAPES */
+  --radius-sm: 10px;
+  --radius-button: 14px;
   --radius-card: 22px;
-  --radius-button: 13px;
   --radius-large: 30px;
+  --radius-pill: 999px;
 
-  /* Motion */
+  /* MOTION */
   --transition-fast: 180ms ease;
   --transition-normal: 280ms ease;
+  --transition-smooth: 400ms cubic-bezier(.2,.8,.2,1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: Arial, sans-serif;
+  --font-sans: var(--font-arabic);
 }
 
 /* =========================================
@@ -73,9 +88,15 @@ body {
   min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, sans-serif;
+  font-family: var(--font-arabic), sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+:lang(en),
+.font-english {
+  font-family: var(--font-english), sans-serif;
 }
 
 button,
@@ -104,7 +125,7 @@ img {
 }
 
 ::selection {
-  background: #d9f0ff;
+  background: rgba(182, 154, 106, 0.24);
   color: var(--navy);
 }
 
@@ -122,7 +143,7 @@ section {
 }
 
 /* =========================================
-   GLASS SURFACES
+   GLASS SYSTEM
 ========================================= */
 
 .surface-card {
@@ -130,8 +151,8 @@ section {
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
   transition:
     box-shadow var(--transition-normal),
     border-color var(--transition-normal),
@@ -144,35 +165,52 @@ section {
 }
 
 /* =========================================
-   BUTTONS
+   BUTTON SYSTEM
 ========================================= */
 
 .primary-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: linear-gradient(135deg, var(--sky-blue), var(--royal-blue));
-  color: #ffffff;
+  gap: 9px;
+  padding: 12px 24px;
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    var(--royal-blue),
+    var(--navy)
+  );
   border: 1px solid transparent;
   border-radius: var(--radius-button);
-  padding: 12px 22px;
   font-weight: 700;
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast),
-    filter var(--transition-fast);
-  box-shadow: 0 6px 18px rgba(37, 142, 232, 0.19);
+  box-shadow: var(--shadow-brand);
+  transition: all var(--transition-fast);
 }
 
 .primary-button:hover {
-  filter: brightness(1.04);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(37, 142, 232, 0.25);
+  filter: brightness(1.08);
+  box-shadow: var(--shadow-floating);
 }
 
 .primary-button:active {
   transform: translateY(0);
+}
+
+/* =========================================
+   PREMIUM ACCENTS
+========================================= */
+
+.champagne-accent {
+  color: var(--champagne);
+}
+
+.ai-accent {
+  color: var(--ai-purple);
+}
+
+.verified-accent {
+  color: var(--success);
 }
 
 /* =========================================
@@ -181,7 +219,7 @@ section {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #c9e6fa transparent;
+  scrollbar-color: var(--silver-blue) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -194,16 +232,52 @@ section {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #c9e6fa;
-  border-radius: 20px;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: #91c9ef;
+  background: var(--silver-blue);
+  border-radius: var(--radius-pill);
 }
 
 /* =========================================
-   MOBILE GLASS FRAME
+   HOME FEATURE FRAME
+========================================= */
+
+.home-feature-frame {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  margin-inline: auto;
+  overflow: hidden;
+  background: var(--surface);
+  border-inline: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+
+.home-feature-frame::before,
+.home-feature-frame::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(169, 184, 200, 0.08),
+    rgba(182, 154, 106, 0.08),
+    transparent
+  );
+}
+
+.home-feature-frame::before {
+  right: 0;
+}
+
+.home-feature-frame::after {
+  left: 0;
+}
+
+/* =========================================
+   RESPONSIVE
 ========================================= */
 
 .mobile-glass-rail {
@@ -211,46 +285,8 @@ section {
 }
 
 @media (max-width: 640px) {
-  html,
-  body {
-    background: #ffffff;
-  }
-
   .container-main {
-    width: calc(100% - 32px);
-  }
-
-  /*
-    Fixed decorative side rails.
-    They do not capture clicks or block scrolling.
-  */
-
-  body::before,
-  body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    width: 5px;
-    z-index: 100;
-    pointer-events: none;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.92),
-      rgba(211, 239, 255, 0.62),
-      rgba(255, 255, 255, 0.92)
-    );
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-inline: 1px solid rgba(255, 255, 255, 0.85);
-  }
-
-  body::before {
-    left: 0;
-  }
-
-  body::after {
-    right: 0;
+    width: calc(100% - 28px);
   }
 
   .surface-card {
@@ -258,13 +294,14 @@ section {
   }
 
   .primary-button {
-    min-height: 44px;
+    min-height: 46px;
+  }
+
+  .home-feature-frame::before,
+  .home-feature-frame::after {
+    width: 9px;
   }
 }
-
-/* =========================================
-   TABLET
-========================================= */
 
 @media (min-width: 641px) and (max-width: 1024px) {
   .container-main {
@@ -276,6 +313,11 @@ section {
    ACCESSIBILITY
 ========================================= */
 
+:focus-visible {
+  outline: 2px solid var(--champagne);
+  outline-offset: 3px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -284,67 +326,5 @@ section {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-}
-
-/* SHOSHAN - CONVEX EDGE DESIGN */
-
-.home-feature-frame {
-  position: relative;
-  isolation: isolate;
-  width: 100%;
-  margin-inline: auto;
-  background: #fff;
-  overflow: hidden;
-  border-inline: 1px solid rgba(72, 184, 245, 0.12);
-  box-shadow:
-    0 0 22px rgba(37, 142, 232, 0.035);
-}
-
-/* Right curved edge */
-.home-feature-frame::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 16px;
-  pointer-events: none;
-  z-index: 1;
-  background: radial-gradient(
-    ellipse 100% 50% at 100% 50%,
-    rgba(37, 142, 232, 0.15),
-    rgba(72, 184, 245, 0.04) 55%,
-    transparent 100%
-  );
-}
-
-/* Left curved edge */
-.home-feature-frame::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 16px;
-  pointer-events: none;
-  z-index: 1;
-  background: radial-gradient(
-    ellipse 100% 50% at 0% 50%,
-    rgba(37, 142, 232, 0.15),
-    rgba(72, 184, 245, 0.04) 55%,
-    transparent 100%
-  );
-}
-
-@media (max-width: 640px) {
-  .home-feature-frame::before,
-  .home-feature-frame::after {
-    width: 12px;
-  }
-
-  .home-feature-frame {
-    box-shadow:
-      0 0 18px rgba(37, 142, 232, 0.045);
   }
 }
